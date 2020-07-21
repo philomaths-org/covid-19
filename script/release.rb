@@ -20,7 +20,7 @@ git_commit "add #{target}.pdf"
 system('git push origin master')
 system("open #{target}.pdf")
 yes = prompt.yes? "Does url in header of pdf got to latest release?"
-puts "You need to fix url".colorize(:red)
+puts "You need to fix url".colorize(:red) unless yes
 exit unless yes
 tag = prompt.ask 'Tag name, as shown in \fancyhead:'
 system("git tag -a #{tag} -m 'New release'")
