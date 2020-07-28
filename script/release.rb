@@ -30,7 +30,6 @@ puts 'All Done'.colorize(:green)
 BEGIN {
   def git_commit(msg)
     `git add .`
-    `git status`
     system("git commit -m '#{msg}'")
   end
 
