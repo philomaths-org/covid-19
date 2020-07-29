@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
-# ruby script/release.rb
 # creates a new release and tag
+# Add new repository name to repos: structure should be /latex/name/name.pdf
 # In order to bundle and execute: ruby script/release.rb
 require 'bundler/inline'
 require 'colorize'
@@ -11,9 +11,9 @@ gemfile do
   gem 'chris_lib', require: 'chris_lib/shell_methods'
 end
 include ShellMethods
-
+repos = %w(fii systems immunity)
 prompt = TTY::Prompt.new
-name = prompt.select 'Select pdf file name:', %w(fii systems immunity)
+name = prompt.select 'Select pdf file name:', repos
 copy_file_from_repo name
 target = prompt.ask 'Enter target name (copy from \fancyhead minus pdf extension):'
 system("mv #{name}.pdf #{target}.pdf" )
@@ -40,11 +40,8 @@ BEGIN {
       system('cp ../covid_tracker/latex/free_infected/fii.pdf fii.pdf')
     when 'systems'
       system('cp ../covid_tracker/latex/self_isolation/systems.pdf systems.pdf')
-    when 'immunity'
-      system('cp ../covid_tracker/latex/immunity/immunity.pdf immunity.pdf')
     else
-      puts "Need to add provision for #{name} in case statement".colorize(:red)
-      exit
+      system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{name}.pdf")
     end
   end
 }
