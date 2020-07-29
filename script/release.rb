@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# ruby script/release.rb
 # creates a new release and tag
 # In order to bundle and execute: ruby script/release.rb
 require 'bundler/inline'
@@ -39,6 +40,8 @@ BEGIN {
       system('cp ../covid_tracker/latex/free_infected/fii.pdf fii.pdf')
     when 'systems'
       system('cp ../covid_tracker/latex/self_isolation/systems.pdf systems.pdf')
+    when 'immunity'
+      system('cp ../covid_tracker/latex/self_isolation/immunity.pdf immunity.pdf')
     else
       puts "Need to add provision for #{name} in case statement".colorize(:red)
       exit
