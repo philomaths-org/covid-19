@@ -13,7 +13,7 @@ end
 include ShellMethods
 
 prompt = TTY::Prompt.new
-name = prompt.select 'Select pdf file name:', %w(fii systems)
+name = prompt.select 'Select pdf file name:', %w(fii systems immunity)
 copy_file_from_repo name
 target = prompt.ask 'Enter target name (copy from \fancyhead minus pdf extension):'
 system("mv #{name}.pdf #{target}.pdf" )
