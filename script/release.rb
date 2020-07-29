@@ -13,7 +13,7 @@ end
 include ShellMethods
 
 prompt = TTY::Prompt.new
-name = prompt.select 'Select pdf file name:', %w(fii systems immunity)
+name = prompt.select 'Select pdf file name:', %w(fii systems immunityn)
 copy_file_from_repo name
 target = prompt.ask 'Enter target name (copy from \fancyhead minus pdf extension):'
 system("mv #{name}.pdf #{target}.pdf" )
@@ -41,7 +41,7 @@ BEGIN {
     when 'systems'
       system('cp ../covid_tracker/latex/self_isolation/systems.pdf systems.pdf')
     when 'immunity'
-      system('cp ../covid_tracker/latex/self_isolation/immunity.pdf immunity.pdf')
+      system('cp ../covid_tracker/latex/immunity/immunity.pdf immunity.pdf')
     else
       puts "Need to add provision for #{name} in case statement".colorize(:red)
       exit
