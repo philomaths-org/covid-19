@@ -14,18 +14,19 @@ include ShellMethods
 repos = %w(fii systems immunity)
 prompt = TTY::Prompt.new
 name = prompt.select 'Select pdf file name:', repos
-copy_file_from_repo name
-target = prompt.ask 'Enter target leaf name (copy from \fancyhead minus pdf extension):'
-system("mv #{name}.pdf #{target}.pdf" )
-git_commit "add #{target}.pdf"
+leaf = leaf_key(name)
+yes = prompt.yes? "Have you uploaded latest version of #{leaf} to S3}"
+exit unless yes
+copy_file_from_repo name, leaf
+git_commit "add #{leaf}.pdf"
 system('git push origin master')
-system("open #{target}.pdf")
+system("open #{leaf}.pdf")
 yes = prompt.yes? "Does url in header of pdf got to latest release?"
 puts "You need to fix url".colorize(:red) unless yes
 exit unless yes
-tag = prompt.ask 'Tag name, as shown in \fancyhead:'
-system("git tag -a #{tag} -m 'New release'")
-system("git push origin #{tag}")
+tag =  prompt.ask 'Enter version, as found in resources section e.g. v2b:'
+system("git tag -a #{name}-#{tag} -m 'New release'")
+system("git push origin #{name}-#{tag}")
 puts 'All Done'.colorize(:green)
 
 BEGIN {
@@ -34,15 +35,16 @@ BEGIN {
     system("git commit -m '#{msg}'")
   end
 
-  def copy_file_from_repo(name)
-    case name
-    when 'fii'
-      system('cp ../covid_tracker/latex/free_infected/fii.pdf fii.pdf')
-    when 'systems'
-      system('cp ../covid_tracker/latex/self_isolation/systems.pdf systems.pdf')
-    else
-      system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{name}.pdf")
-    end
+  def leaf_key
+    {
+      'fii': 'free_infected_individuals',
+      'systems': 'social_distancing',
+      'immunity': 'conditional_immunity'
+    }
+  end
+
+  def copy_file_from_repo(name, leaf)
+    system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{leaf}/#{leaf}.pdf")
   end
 }
 
