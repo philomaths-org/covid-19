@@ -15,7 +15,7 @@ repos = %w(fii systems immunity)
 prompt = TTY::Prompt.new
 name = prompt.select 'Select pdf file name:', repos
 leaf = leaf_key(name)
-yes = prompt.yes? "Have you uploaded latest version of #{leaf} to S3}"
+yes = prompt.yes? "Have you uploaded latest version of #{leaf.colorize(:green)} to S3}"
 exit unless yes
 copy_file_from_repo name, leaf
 git_commit "add #{leaf}.pdf"
@@ -35,12 +35,12 @@ BEGIN {
     system("git commit -m '#{msg}'")
   end
 
-  def leaf_key
+  def leaf_key(name)
     {
       'fii': 'free_infected_individuals',
       'systems': 'social_distancing',
       'immunity': 'conditional_immunity'
-    }
+    }[name.to_sym]
   end
 
   def copy_file_from_repo(name, leaf)
