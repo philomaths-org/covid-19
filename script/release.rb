@@ -20,7 +20,7 @@ exit unless yes
 copy_file_from_repo name, leaf
 git_commit "add #{leaf}.pdf"
 system('git push origin master')
-system("open #{leaf}/#{leaf}}.pdf")
+system("open #{leaf}/#{leaf}.pdf")
 yes = prompt.yes? "Does url in header of pdf got to latest release?"
 puts "You need to fix url".colorize(:red) unless yes
 exit unless yes
