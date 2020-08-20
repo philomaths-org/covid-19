@@ -4,20 +4,26 @@
 # In order to bundle and execute: ruby script/release.rb
 require 'bundler/inline'
 require 'colorize'
-
 gemfile do
   source 'https://rubygems.org'
   gem 'tty-prompt'
   gem 'chris_lib', require: 'chris_lib/shell_methods'
+  gem 'aws-sdk-s3'
+  gem 'dotenv'
+  gem 'pry'
 end
+
+require 'dotenv/load'
 include ShellMethods
+
 repos = %w(fii systems immunity)
 prompt = TTY::Prompt.new
-name = prompt.select 'Select pdf file name:', repos
+s3 = new_s3
+# name = prompt.select 'Select pdf file name:', repos
+name = 'systems'
 leaf = leaf_key(name)
-yes = prompt.yes? "Have you uploaded latest version of #{leaf.colorize(:green)} to S3}"
-exit unless yes
 copy_file_from_repo name, leaf
+upload_pdf s3, name, leaf
 git_commit "add #{leaf}.pdf"
 system('git push origin master')
 system("open #{leaf}/#{leaf}.pdf")
@@ -30,6 +36,19 @@ system("git push origin #{name}-#{tag}")
 puts 'All Done'.colorize(:green)
 
 BEGIN {
+
+  def new_s3
+    access_key_id = ENV['ACCESS_KEY_ID']
+    secret_access_key = ENV['SECRET_ACCESS_KEY']
+    credentials = Aws::Credentials.new access_key_id, secret_access_key
+binding.pry
+    Aws::S3::Resource.new(region: 'us-east-1', credentials: credentials)
+  end
+  def upload_pdf(s3, name, leaf)
+    obj = s3.bucket('covid-tracker-us-east').object("/papers/#{leaf}.pdf")
+    obj.upload_file "#{leaf}/#{leaf}.pdf"
+  end
+
   def git_commit(msg)
     `git add .`
     system("git commit -m '#{msg}'")
