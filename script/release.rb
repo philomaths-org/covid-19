@@ -3,17 +3,18 @@
 # Add new repository name to repos: structure should be /latex/name/name.pdf
 # In order to bundle and execute: ruby script/release.rb
 require 'bundler/inline'
+require 'dotenv'
+Dotenv.load
 require 'colorize'
 gemfile do
   source 'https://rubygems.org'
   gem 'tty-prompt'
   gem 'chris_lib', require: 'chris_lib/shell_methods'
-  gem 'aws-sdk-s3'
   gem 'dotenv'
+  gem 'aws-sdk-s3'
   gem 'pry'
 end
 
-require 'dotenv/load'
 include ShellMethods
 
 repos = %w(fii systems immunity)
@@ -41,6 +42,7 @@ BEGIN {
     access_key_id = ENV['ACCESS_KEY_ID']
     secret_access_key = ENV['SECRET_ACCESS_KEY']
     credentials = Aws::Credentials.new access_key_id, secret_access_key
+binding.pry
     Aws::S3::Resource.new(region: 'us-east-1', credentials: credentials)
   end
   def upload_pdf(s3, name, leaf)
