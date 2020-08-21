@@ -42,10 +42,10 @@ BEGIN {
     access_key_id = ENV['ACCESS_KEY_ID']
     secret_access_key = ENV['SECRET_ACCESS_KEY']
     credentials = Aws::Credentials.new access_key_id, secret_access_key
-binding.pry
     Aws::S3::Resource.new(region: 'us-east-1', credentials: credentials)
   end
   def upload_pdf(s3, name, leaf)
+binding.pry
     obj = s3.bucket('covid-tracker-us-east').object("/papers/#{leaf}.pdf")
     obj.upload_file "#{leaf}/#{leaf}.pdf"
   end
