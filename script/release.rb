@@ -20,8 +20,7 @@ include ShellMethods
 repos = %w(fii systems immunity)
 prompt = TTY::Prompt.new
 s3 = new_s3
-# name = prompt.select 'Select pdf file name:', repos
-name = 'systems'
+name = prompt.select 'Select pdf file name:', repos
 leaf = leaf_key(name)
 copy_file_from_repo name, leaf
 upload_pdf s3, name, leaf
@@ -44,7 +43,7 @@ BEGIN {
     credentials = Aws::Credentials.new access_key_id, secret_access_key
     Aws::S3::Resource.new(region: 'us-east-1', credentials: credentials)
   end
-  
+
   def upload_pdf(s3, name, leaf)
     obj = s3.bucket('covid-tracker-us-east').object("papers/#{leaf}.pdf")
     obj.upload_file "#{leaf}/#{leaf}.pdf"
