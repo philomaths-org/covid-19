@@ -32,7 +32,7 @@ puts "You need to fix url".colorize(:red) unless yes
 exit unless yes
 tag =  prompt.ask 'Enter version, as found in the header e.g. TN1-v17'
 system("git tag -a #{tag} -m 'New release'")
-system("git push origin #{name}-#{tag}")
+system("git push origin #{tag}")
 puts 'All Done'.colorize(:green)
 
 BEGIN {
