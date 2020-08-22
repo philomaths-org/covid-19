@@ -28,7 +28,7 @@ git_commit "add #{leaf}.pdf"
 system('git push origin master')
 system("open https://www.philomaths.org/papers/#{leaf}.pdf")
 yes = prompt.yes? "Does url in header of pdf got to latest release?"
-puts "You need to fix url".colorize(:red) unless yes
+puts "You need to fix url or version".colorize(:red) unless yes
 exit unless yes
 tag =  prompt.ask 'Enter version, as found in the header e.g. TN1-v17'
 system("git tag -a #{tag} -m 'New release'")
