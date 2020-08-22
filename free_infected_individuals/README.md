@@ -1,0 +1,18 @@
+# Explanatory Notes
+  - The file epi_fii.rb estimates the number of Free Infected Individuals.  Its inputs are
+    - cases (daily cumulative case count)
+    - deaths (daily cumulative deaths)
+    - prevalence (calculated using epi_prevalance.rb file)
+  - The file epi_prevalence.rb file estimates the number of currently infected individuals. It has as input
+    - incidence (daily new cases)
+  - The file epi_cdr.rb estimates the Case Detection Ratio. Its inputs are
+    - cases (daily cumulative deaths)
+  - deaths  (daily cumulative deaths)
+    - max_delay (maximum lag used by LogNormalConvolve)
+    - ccfr (The CFR or IFR with CI)
+  - The file log_normal_convolve.rb does a convolution of a vector with a lognormal density function. Its inputs are
+    - mean of lognormal distribution (only used if z_mean is not present)
+    - std of lognormal distribution (only used if z_mean is not present)
+    - z_mean of lognormal distribution
+    - z_median of lognormal distribution
+    - max_delay (maximum lag used by convolution)
