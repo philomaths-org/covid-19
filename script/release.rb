@@ -17,7 +17,7 @@ end
 
 include ShellMethods
 
-repos = %w(fii systems immunity)
+repos = %w(fii systems immunity victoria)
 prompt = TTY::Prompt.new
 s3 = new_s3
 name = prompt.select 'Select pdf file name:', repos
@@ -58,7 +58,8 @@ BEGIN {
     {
       'fii': 'free_infected_individuals',
       'systems': 'social_distancing',
-      'immunity': 'conditional_immunity'
+      'immunity': 'conditional_immunity',
+      'victoria': 'victoria'
     }[name.to_sym]
   end
 
