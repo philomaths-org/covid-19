@@ -17,7 +17,7 @@ end
 
 include ShellMethods
 
-repos = %w(fii systems immunity victoria)
+repos = %w(fii systems immunity victoria calibration adsense)
 prompt = TTY::Prompt.new
 s3 = new_s3
 name = prompt.select 'Select pdf file name:', repos
@@ -59,12 +59,18 @@ BEGIN {
       'fii': 'free_infected_individuals',
       'systems': 'social_distancing',
       'immunity': 'conditional_immunity',
-      'victoria': 'victoria'
+      'victoria': 'victoria',
+      'calibration': 'calibration',
+      'adsense': 'adsense'
     }[name.to_sym]
   end
 
   def copy_file_from_repo(name, leaf)
-    system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{leaf}/#{leaf}.pdf")
+    if name == 'calibration'
+      system("cp ../gimme/latex/#{name}.pdf #{leaf}/#{leaf}.pdf")
+    else
+      system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{leaf}/#{leaf}.pdf")
+    end
   end
 }
 
