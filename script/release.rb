@@ -20,17 +20,17 @@ include ShellMethods
 
 repos = %w(fii systems immunity victoria calibration adsense)
 prompt = TTY::Prompt.new
-puts "Initalize S3"
 s3 = new_s3
 name = prompt.select 'Select pdf file name:', repos
 leaf = leaf_key(name)
+puts "leaf: #{leaf}"
 copy_file_from_repo name, leaf
 upload_pdf s3, name, leaf
 git_commit "add #{leaf}.pdf"
 system('git push origin master')
 system("open https://www.philomaths.org/papers/#{leaf}.pdf")
-yes = prompt.yes? "Does url in header of pdf got to latest release?"
-puts "You need to fix url or version".colorize(:red) unless yes
+yes = prompt.yes? 'Does url in header of pdf got to latest release?'
+puts 'You need to fix url or version'.colorize(:red) unless yes
 exit unless yes
 tag =  prompt.ask 'Enter version, as found in the header e.g. TN1-v17:'
 system("git tag -a #{tag} -m 'New release'")
