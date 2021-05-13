@@ -66,8 +66,8 @@ BEGIN {
   end
 
   def copy_file_from_repo(name, leaf)
-    if name == 'calibration'
-      system("cp ../gimme/latex/#{name}.pdf #{leaf}/#{leaf}.pdf")
+    if %w(calibration adsense)
+      system("cp ../gimme/latex/#{name}/#{name}.pdf #{leaf}/#{leaf}.pdf")
     else
       system("cp ../covid_tracker/latex/#{name}/#{name}.pdf #{leaf}/#{leaf}.pdf")
     end
