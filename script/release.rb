@@ -3,22 +3,24 @@
 # Add new repository name to repos: structure should be /latex/name/name.pdf
 # In order to bundle and execute: ruby script/release.rb
 require 'bundler/inline'
-require 'dotenv'
-Dotenv.load
-require 'colorize'
 gemfile do
   source 'https://rubygems.org'
+  ruby '2.7.3'
+  gem 'colorize'
   gem 'tty-prompt'
   gem 'chris_lib', require: 'chris_lib/shell_methods'
   gem 'dotenv'
   gem 'aws-sdk-s3'
   gem 'pry'
 end
-
+require 'dotenv'
+Dotenv.load
+require 'colorize'
 include ShellMethods
 
 repos = %w(fii systems immunity victoria calibration adsense)
 prompt = TTY::Prompt.new
+puts "Initalize S3"
 s3 = new_s3
 name = prompt.select 'Select pdf file name:', repos
 leaf = leaf_key(name)
